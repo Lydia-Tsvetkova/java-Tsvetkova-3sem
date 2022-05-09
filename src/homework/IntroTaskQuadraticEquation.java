@@ -1,3 +1,5 @@
+package src.homework;
+
 import java.util.Scanner;
 
 public class IntroTaskQuadraticEquation {

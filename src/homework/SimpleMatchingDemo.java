@@ -1,3 +1,5 @@
+package src.homework;
+
 import java.util.regex.Pattern;
 
 public class SimpleMatchingDemo {

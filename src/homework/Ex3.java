@@ -1,3 +1,4 @@
+package src.homework;
 
 public class Ex3 {
 

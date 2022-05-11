@@ -1,6 +1,7 @@
 package ru.spbu.arts.javafx;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,11 +30,44 @@ public class CircleControl extends Application {
     private Parent initInterface() {
         GridPane panel0 = new GridPane();
 
+        ColumnConstraints c1 = new ColumnConstraints();
+        c1.setMinWidth(150);
+        c1.setMaxWidth(150);
+        ColumnConstraints c2 = new ColumnConstraints();
+        c2.setHgrow(Priority.ALWAYS);
+        panel0.getColumnConstraints().addAll(c1, c2);
+
+        RowConstraints r1 = new RowConstraints();
+        r1.setVgrow(Priority.ALWAYS);
+
+        panel0.getRowConstraints().addAll(r1);
+
         Pane pane = new Pane();
-        Circle circle = new Circle(0.5 * pane.getWidth(), 0.5 * pane.getHeight(), 50 );
-        System.out.println(pane.getWidth());
-        System.out.println(pane.getHeight());
-        Slider slider = new Slider(0.0, 500.0, 50.0);
+        Circle circle = new Circle();
+
+        circle.setRadius(0.0);
+
+        Slider slider = new Slider();
+
+        slider.maxProperty().bind(Bindings.createDoubleBinding(
+                () -> (Math.min(pane.getHeight(),pane.getWidth()) / 2),
+                pane.heightProperty(),pane.widthProperty() ));
+
+        circle.radiusProperty().bind(Bindings.createDoubleBinding(
+                slider::getValue,
+                slider.valueProperty()
+        ));
+
+        circle.centerXProperty().bind(Bindings.createDoubleBinding(
+                () -> (pane.getWidth() / 2),
+                pane.widthProperty()
+        ));
+
+        circle.centerYProperty().bind(Bindings.createDoubleBinding(
+                () -> (pane.getHeight() / 2),
+                pane.heightProperty()
+        ));
+
         ColorPicker pick1 = new ColorPicker();
         ColorPicker pick2 = new ColorPicker();
         Label lbl1 = new Label("Circle radius");
@@ -62,21 +96,6 @@ public class CircleControl extends Application {
             circle.setFill(myColor);
         });
 
-        slider.setOnDragDetected(actionEvent -> circle.setRadius(0.5 * slider.getValue()));
-
-        ColumnConstraints c1 = new ColumnConstraints();
-        c1.setMinWidth(150);
-        c1.setMaxWidth(150);
-        ColumnConstraints c2 = new ColumnConstraints();
-        c2.setHgrow(Priority.ALWAYS);
-        panel0.getColumnConstraints().addAll(c1, c2);
-
-        RowConstraints r1 = new RowConstraints();
-        r1.setMinHeight(1500);
-
-        panel0.getRowConstraints().addAll(r1);
-
         return panel0;
     }
 }
-

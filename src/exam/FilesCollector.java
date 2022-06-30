@@ -27,7 +27,7 @@ public class FilesCollector implements FileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         allFiles.add(file.getFileName());
         String filename = String.valueOf(file.getFileName());
-        String extension = filename.substring(filename.indexOf('.', 0), filename.length());
+        String extension = filename.substring(filename.lastIndexOf('.', 0), filename.length());
         if(allFilesExtensions.contains(extension)) {
             return CONTINUE;
         }
